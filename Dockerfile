@@ -1,24 +1,29 @@
+# Dockerfile - production
 FROM python:3.9-slim
 
-# install system deps for tesseract, poppler, java (tabula)
-RUN apt-get update && apt-get install -y \
+# Install system deps needed for OCR and PDF handling
+RUN apt-get update && apt-get install -y --no-install-recommends \
     tesseract-ocr libpoppler-cpp-dev poppler-utils \
     default-jre ffmpeg build-essential && \
     rm -rf /var/lib/apt/lists/*
 
+# Create app directory
 WORKDIR /app
 
-# copy top-level requirements.txt into /app
+# Copy only requirements first (leverages Docker cache)
 COPY requirements.txt /app/requirements.txt
+
+# Install Python dependencies
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
-# copy only the app/ folder contents into /app (so main.py is /app/main.py)
+# Copy application code (place main.py at /app/main.py)
 COPY ./app /app
 
+# Expose port (informational)
+EXPOSE 8080
+
 ENV PORT=8080
+ENV PYTHONUNBUFFERED=1
 
-# debug entrypoint to print import tracebacks — remove later
-CMD ["python", "/app/startup_debug.py"]
-
-# once debugging is done, revert to:
-# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+# Run the ASGI server
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
