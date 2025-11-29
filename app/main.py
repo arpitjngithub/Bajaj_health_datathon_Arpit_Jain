@@ -6,7 +6,7 @@ import requests
 import uvicorn
 import os
 from ocr_pipeline import process_document_url
-# from utils import compute_reconciled_amount, format_response_with_tokens
+from utils import compute_reconciled_amount, format_response_with_tokens
 
 app = FastAPI(title="Bajaj Health Datathon - Bill Extractor")
 
