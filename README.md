@@ -10,27 +10,27 @@ Prereqs:
 - Poppler installed (`sudo apt-get install poppler-utils`)
 - Java (for tabula/camelot) if using table extraction for PDFs
 
-##Install:
+## Install:
 ```bash
 cd app
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
-##Run:
+## Run:
 ```bash
 uvicorn main:app --host 0.0.0.0 --port 8080
 ```
 
-##Test (example curl):
+## Test (example curl):
 ```bash
 curl -X POST "http://localhost:8080/extract-bill-data" -H "Content-Type: application/json" -d '{"document":"<DOCUMENT_URL>"}'
 ```
-##Deployment
+## Deployment
 
 You can deploy to Render / Railway / Heroku / DigitalOcean / AWS Elastic Beanstalk / Azure App Service. Provide the resulting HTTPS webhook URL to the datathon submission portal.
 
-##Files
+## Files
 
 1. main.py: FastAPI endpoint
 
@@ -44,7 +44,7 @@ You can deploy to Render / Railway / Heroku / DigitalOcean / AWS Elastic Beansta
 
 6. postman_collection.json: import to test
 
-##Notes & Differentiators
+## Notes & Differentiators
 
 1. Preprocessing: image deskew, contrast stretch, adaptive thresholding used (add if needed).
 
